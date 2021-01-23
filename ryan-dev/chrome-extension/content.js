@@ -11,8 +11,9 @@ chrome.runtime.onMessage.addListener(
 
           // Extract twitter username from URL
           const regex = /(?<=twitter\.com\/)\w*/;
-          var username = current_url.match(regex);
-          console.log('@'.concat(username[0]));
+          var username = current_url.match(regex)[0];
+          console.log(username)
+          //console.log('@'.concat(username[0]));
 
           // Send URL to background.js
           chrome.runtime.sendMessage({"message": "twitter_handle", "handle": username, "url": current_url});
