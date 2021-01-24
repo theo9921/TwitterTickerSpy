@@ -1,11 +1,11 @@
 {
-    "data": [
+    "data": 
       {
         "i1": 1,
         "i2": "hello",
         "i3": "world"
       }
-    ],
+    ,
     "profile": {
       "name": "typicode"
     }
