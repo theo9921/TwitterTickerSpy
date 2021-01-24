@@ -1,10 +1,6 @@
 import pandas as pd
 import itertools
 import snscrape.modules.twitter as sntwitter
-import numpy as np
-import requests
-from bs4 import BeautifulSoup
-import re
 
 from analysis import tickers_in_tweet, ticker_ESG, ESG_avg_function
 from extension_interface import get_twitter_handle
@@ -58,11 +54,12 @@ def tweet_workflow():
 
     # Tweet processing
 
+
     # Extract stock tickers
     ticker_dict = gather_tickers(raw_tweets)
 
     # Stock ticker analysis
-    if not ticker_dict:     # If no tickers were found in the tweets
+    if not ticker_dict:  # If no tickers were found in the tweets
         most_tweeted_company = "N/A"
         number_of_mentions = "N/A"
         ESG_most_tweeted_company = "N/A"
@@ -73,12 +70,18 @@ def tweet_workflow():
         number_of_mentions = ticker_dict[most_tweeted_company]
         ESG_most_tweeted_company = ticker_ESG(most_tweeted_company)
 
-        try:   # If no ESG ratings are available for all companies
+        try:  # If no ESG ratings are available for all companies
             ESG_avg = ESG_avg_function(ticker_dict)
         except ZeroDivisionError:
             ESG_avg = "This person has not tweeted about any ESG-rated companies!"
 
-    return str(most_tweeted_company), str(number_of_mentions), str(ESG_most_tweeted_company), str(ESG_avg)#, ticker_dict
+    # Send to Chrome Extension
+
+
+    return str(most_tweeted_company), str(number_of_mentions), str(ESG_most_tweeted_company), str(
+        ESG_avg)  # , ticker_dict
+
+    #return True
 
 
 if __name__ == "__main__":

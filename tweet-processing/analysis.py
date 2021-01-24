@@ -8,6 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
+
 def tickers_in_tweet(tweet):
     """ Input: A single tweet as a string
 
@@ -36,11 +37,11 @@ def ticker_ESG(ticker):
     # Generate URL
     working_url = 'https://uk.finance.yahoo.com/quote/' + str(ticker).upper() + '/sustainability?p=' + str(
         ticker).upper()
-    total_ESG = scrape_yahoo(working_url)
+    total_ESG = _scrape_yahoo(working_url)
     return total_ESG
 
 
-def scrape_yahoo(url):
+def _scrape_yahoo(url):
     """This function checks and accepts a Yahoo finance URL and outputs the Total ESG Risk Score as an int """
 
     # GET page and convert content to bs4 soup
@@ -58,7 +59,6 @@ def scrape_yahoo(url):
 
     return total_ESG
 
-# Calculate average ESG of all companies mentioned
 
 def ESG_avg_function(dictionary):
     """
