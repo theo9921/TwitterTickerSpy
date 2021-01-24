@@ -22,10 +22,10 @@ const searchForHandle = async handleName => {
   try {
     const response = await axios.get(`${api}`);
     loading.style.display = "none";
-    i1.textContent = toString(response.data[0].handle);
-    i2.textContent = toString(response.data[0].ticker);
-    i3.textContent = toString(response.data[0].fullName);
-    i4.textContent = toString(response.data[0].price);
+    i1.textContent = toString(response.data[0].mtc);
+    i2.textContent = toString(response.data[0].num_mentions);
+    i3.textContent = toString(response.data[0].mtc_esg);
+    i4.textContent = toString(response.data[0].esg_av);
     results.style.display = "block";
   } catch (error) {
     loading.style.display = "none";

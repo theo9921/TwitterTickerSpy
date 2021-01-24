@@ -85,7 +85,7 @@
             try {
               const a = await o.a.put(
                 "http://localhost:3000/input/", {
-                  handle: (p.value.trim() == "") ? ('@'+username) : '@'+p.value,
+                  handle: (p.value.trim() == "") ? (username) : p.value,
                   id: 1
               });
             } catch (e) {
@@ -100,11 +100,11 @@
                   "http://localhost:3000/data/"
                 );
                 (s.style.display = "none"),
-                  (a.textContent = (p.value.trim() == "") ? ('@'+username) : '@'+p.value),
+                  (a.textContent = t.data[0].mtc),
                   //(a.textContent = p.value + " " + username + " " + t.data[0].handle),
-                  (u.textContent = t.data[0].ticker),
-                  (c.textContent = t.data[0].fullName),
-                  (z.textContent = t.data[0].price),
+                  (u.textContent = t.data[0].num_mentions),
+                  (c.textContent = t.data[0].mtc_esg),
+                  (z.textContent = t.data[0].esg_av),
                   (f.style.display = "block");
               } catch (e) {
                 (s.style.display = "none"),
