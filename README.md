@@ -1,7 +1,5 @@
-# hex-cambridge
-Hack Cambridge 2021
-
 ## Twitter Ticker $PY
+__Hack Cambridge 2021__
 
 There's no shortage of people on twitter giving investment advice, how does a user have a chance to separate signal from noise? We have built a browser extension which allows users to query any twitter profile and gain useful insight on their stock-promoting behaviour. Simply type in a twitter handle (e.g. 'JoeBiden', 'MadsC007', 'WarlusTrades' etc, and the extension will give you the following insight about that user:
 
