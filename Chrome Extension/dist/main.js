@@ -83,28 +83,35 @@
           await (async (e) => {
             (s.style.display = "block"), (i.textContent = "");
             try {
-              // const a = await o.a.put(
-              //   "http://localhost:3000/data/1/", {
-              //     ticker: "TSLA",
-              //     handle: "@jessy_doe",
-              //     fullName: "Tesla Inc",
-              //     price: "834.02",
-              // });
-              const t = await o.a.get(
-                "http://localhost:3000/data/"
-              );
-              (s.style.display = "none"),
-                (a.textContent = (p.value.trim() == "") ? ('@'+username) : '@'+p.value),
-                //(a.textContent = p.value + " " + username + " " + t.data[0].handle),
-                (u.textContent = t.data[0].ticker),
-                (c.textContent = t.data[0].fullName),
-                (z.textContent = t.data[0].price),
-                (f.style.display = "block");
+              const a = await o.a.put(
+                "http://localhost:3000/input/", {
+                  handle: (p.value.trim() == "") ? ('@'+username) : '@'+p.value,
+                  id: 1
+              });
             } catch (e) {
               (s.style.display = "none"),
                 (f.style.display = "none"),
                 (i.textContent =
                   "We have no data for the handle you have requested.\n"+e);
+            }
+            finally{
+              try {
+                const t = await o.a.get(
+                  "http://localhost:3000/data/"
+                );
+                (s.style.display = "none"),
+                  (a.textContent = (p.value.trim() == "") ? ('@'+username) : '@'+p.value),
+                  //(a.textContent = p.value + " " + username + " " + t.data[0].handle),
+                  (u.textContent = t.data[0].ticker),
+                  (c.textContent = t.data[0].fullName),
+                  (z.textContent = t.data[0].price),
+                  (f.style.display = "block");
+              } catch (e) {
+                (s.style.display = "none"),
+                  (f.style.display = "none"),
+                  (i.textContent =
+                    "We have no data for the handle you have requested.\n"+e);
+              }
             }
           })(p.value),
           console.log(p.value);
