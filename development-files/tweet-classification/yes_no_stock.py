@@ -26,7 +26,11 @@ def get_prediction(file_path, model_name):
     payload = automl_v1.ExamplePayload(text_snip)
     print(payload)
     request = prediction_client.predict(name=model_name, payload=payload)
-    return request  # waits until request is returned
+
+    # for annotation_payload in request:
+    #     print(annotation_payload.display_name)
+
+    return request.payload[0].display_name  # waits until request is returned
 
 
 print(get_prediction('stock_tweets/y_5.txt', 'projects/313817029040/locations/us-central1/models/TCN8645127876691099648'))

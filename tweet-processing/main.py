@@ -4,6 +4,7 @@ import snscrape.modules.twitter as sntwitter
 
 from analysis import tickers_in_tweet, ticker_ESG, ESG_avg_function
 from extension_interface import get_twitter_handle
+from gcloud_api import stock_tweet_classifier
 
 
 def twitter_scrape(handle, num_tweet):
@@ -47,16 +48,29 @@ def gather_tickers(tweet_df):
 def tweet_workflow():
     """Main function for the python backend"""
     # Get twitter handle from Chrome Extension
-    handle = get_twitter_handle()
+    #handle = get_twitter_handle()
+    handle = "investor666"
 
     # Scrape for the user's most recent tweets
-    raw_tweets = twitter_scrape(handle=handle, num_tweet=30)
+    raw_tweets_df = twitter_scrape(handle=handle, num_tweet=30) # Returns dataframe
 
     # Tweet processing
-
+    # Stock tweet classifier
+    stock_df_rows = []
+    # for row, tweet in enumerate(raw_tweets['content']):
+    #     is_stock = stock_tweet_classifier(tweet)
+    #
+    #     if is_stock:
+    #         stock_df_rows.append(row)
+    # print(stock_df_rows)
+    raw_tweets_df['index1'] = raw_tweets_df.index
+    stock_df_rows = [1, 11, 12]
+    print(raw_tweets_df.iloc[[1, 11, 12]])
+    print(raw_tweets_df['index1'].isin(stock_df_rows))
+    stock_tweets = raw_tweets_df.loc[raw_tweets_df['index1'].isin(stock_df_rows)]
 
     # Extract stock tickers
-    ticker_dict = gather_tickers(raw_tweets)
+    ticker_dict = gather_tickers(stock_tweets)
 
     # Stock ticker analysis
     if not ticker_dict:  # If no tickers were found in the tweets
