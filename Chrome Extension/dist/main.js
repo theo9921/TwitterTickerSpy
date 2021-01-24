@@ -68,6 +68,7 @@
     
     const i = document.querySelector(".errors"),
       s = document.querySelector(".loading"),
+      y = document.querySelector(".handle"),
       a = document.querySelector(".i1"),
       u = document.querySelector(".i2"),
       c = document.querySelector(".i3"),
@@ -83,9 +84,10 @@
           await (async (e) => {
             (s.style.display = "block"), (i.textContent = "");
             try {
+              var trimmed_text = p.value.replace(/[^\w]/gi, '');
               const a = await o.a.put(
                 "http://localhost:3000/input/", {
-                  handle: (p.value.trim() == "") ? (username) : p.value,
+                  handle: (trimmed_text== "") ? (username) : trimmed_text,
                   id: 1
               });
             } catch (e) {
@@ -100,8 +102,9 @@
                   "http://localhost:3000/data/"
                 );
                 (s.style.display = "none"),
+                  (y.textContent = (trimmed_text == "") ? ('@'+username) : ('@'+trimmed_text)),
                   (a.textContent = t.data[0].mtc),
-                  //(a.textContent = p.value + " " + username + " " + t.data[0].handle),
+                  //(a.textContent =  + " " + t.data[0].handle),
                   (u.textContent = t.data[0].num_mentions),
                   (c.textContent = t.data[0].mtc_esg),
                   (z.textContent = t.data[0].esg_av),
