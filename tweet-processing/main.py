@@ -31,7 +31,7 @@ def gather_tickers(tweet_df):
     """
     # gathers list of all tickers mentioned in all tweets
     tickers_list = []
-    for i in range(len(tweet_df)):
+    for i in tweet_df.index:
         tickers_list += tickers_in_tweet(tweet_df['content'][i])
 
     # Create dict containing all companies mentioned (key), and the frequency (value)
@@ -55,19 +55,16 @@ def tweet_workflow():
     raw_tweets_df = twitter_scrape(handle=handle, num_tweet=30) # Returns dataframe
 
     # Tweet processing
-    # Stock tweet classifier
+    # Stock tweet filter
     stock_df_rows = []
-    # for row, tweet in enumerate(raw_tweets['content']):
-    #     is_stock = stock_tweet_classifier(tweet)
-    #
-    #     if is_stock:
-    #         stock_df_rows.append(row)
-    # print(stock_df_rows)
-    raw_tweets_df['index1'] = raw_tweets_df.index
-    stock_df_rows = [1, 11, 12]
-    print(raw_tweets_df.iloc[[1, 11, 12]])
-    print(raw_tweets_df['index1'].isin(stock_df_rows))
-    stock_tweets = raw_tweets_df.loc[raw_tweets_df['index1'].isin(stock_df_rows)]
+    for row, tweet in enumerate(raw_tweets_df['content']):
+        is_stock = stock_tweet_classifier(tweet)
+
+        if is_stock:
+            stock_df_rows.append(row)
+    stock_tweets = raw_tweets_df.iloc[stock_df_rows]
+
+    # Sentiment filter
 
     # Extract stock tickers
     ticker_dict = gather_tickers(stock_tweets)

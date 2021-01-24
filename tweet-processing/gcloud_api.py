@@ -25,3 +25,4 @@ def stock_tweet_classifier(tweet_string):
         return True
     else:
         return False
+
