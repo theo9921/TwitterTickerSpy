@@ -3,8 +3,8 @@ import itertools
 import snscrape.modules.twitter as sntwitter
 
 from analysis import tickers_in_tweet, ticker_ESG, ESG_avg_function, stock_return_since_mention
-from extension_interface import get_twitter_handle
-from gcloud_api import stock_tweet_classifier
+from extension_interface import get_twitter_handle, update_server_data
+#from gcloud_api import stock_tweet_classifier
 
 
 def twitter_scrape(handle, num_tweet):
@@ -104,7 +104,8 @@ def tweet_workflow():
             ESG_avg = "This person has not tweeted about any ESG-rated companies!"
 
     # Send to Chrome Extension
-
+    # update_server_data([str(most_tweeted_company), str(number_of_mentions), str(ESG_most_tweeted_company), str(
+    #     ESG_avg), str(average_return)])
 
     return str(most_tweeted_company), str(number_of_mentions), str(ESG_most_tweeted_company), str(
         ESG_avg), str(average_return)  # , ticker_dict
