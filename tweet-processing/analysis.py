@@ -93,7 +93,7 @@ def stock_price_today(ticker):
     """
     now = datetime.datetime.now().strftime("%Y-%m-%d")
     stock = yf.Ticker(ticker)
-    price = data.history(start='2021-01-01', end=now)
+    price = stock.history(start='2021-01-01', end=now)
     price_today = price['Close'][-1]
 
     return price_today
@@ -107,7 +107,7 @@ def stock_price_at_date(ticker, date):
     """
     now = datetime.datetime.now().strftime("%Y-%m-%d")
     stock = yf.Ticker(ticker)
-    price = data.history(start=date, end=now)
+    price = stock.history(start=date, end=now)
     price_date = price['Close'][0]
 
     return price_date
@@ -121,6 +121,7 @@ def stock_return_since_mention(ticker, date):
     """
     price_today = stock_price_today(ticker)
     price_date = stock_price_at_date(ticker, date)
+
 
     stock_return = (price_today - price_date) / price_date
     return stock_return
