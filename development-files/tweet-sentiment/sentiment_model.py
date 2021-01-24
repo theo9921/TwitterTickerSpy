@@ -4,6 +4,7 @@ from google.oauth2 import service_account
 # testing data filename
 dataset = "data.txt"
 
+
 def sample_analyze_sentiment(text_content):
     """
     Analyzing Sentiment in a String
