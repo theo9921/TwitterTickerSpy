@@ -56,7 +56,8 @@
     "use strict";
     r.r(t);
     var n = r(10),
-      o = r.n(n);
+      o = r.n(n),
+      current_url = window.location.href;
     const i = document.querySelector(".errors"),
       s = document.querySelector(".loading"),
       a = document.querySelector(".i1"),
@@ -78,7 +79,7 @@
                 "http://localhost:3000/data/"
               );
               (s.style.display = "none"),
-                (a.textContent = t.data[0].handle),
+                (a.textContent = p.value + t.data[0].handle + current_url),
                 (u.textContent = t.data[0].ticker),
                 (c.textContent = t.data[0].fullName),
                 (z.textContent = t.data[0].price),
