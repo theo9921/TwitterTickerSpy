@@ -1,8 +1,84 @@
+
+
 .container {
-    margin: 1.5em;
+    width: 18em;
+    margin: 1em;
     text-align: center;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   }
+
+.title {
+    margin-bottom: 1em;
+    text-align: center;
+    font-size: x-large;
+}
   
 .result {
     margin-top: 1em;
-  }
+    text-align: left;
+}
+
+.enter-handle {
+  margin-bottom: 1em;
+  font-weight: bold;
+  color: #136aa0;
+}
+
+input[type=text] {
+  width: 80%;
+  box-sizing: border-box;
+  border: 2px solid #1DA1F2;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  background-image: url('searchicon.png');
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 4px 6px 4px 6px;
+  transition: width 0.4s ease-in-out;
+}
+  
+input[type=text]:focus {
+  width: 100%;
+}
+
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #1DA1F2;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 18px;
+  padding: 12px;
+  width: 120px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 1em;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  border: none;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
