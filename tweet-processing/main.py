@@ -1,7 +1,7 @@
 import pandas as pd
 import itertools
 import snscrape.modules.twitter as sntwitter
-
+from time import sleep
 from analysis import tickers_in_tweet, ticker_ESG, ESG_avg_function, stock_return_since_mention
 from extension_interface import get_twitter_handle, update_server_data
 #from gcloud_api import stock_tweet_classifier
@@ -63,8 +63,8 @@ def gather_tickers(tweet_df):
 def tweet_workflow():
     """Main function for the python backend"""
     # Get twitter handle from Chrome Extension
-    #handle = get_twitter_handle()
-    handle = "MadsC007"
+    handle = get_twitter_handle()
+    #handle = "MadsC007"
 
     # Scrape for the user's most recent tweets
     raw_tweets_df = twitter_scrape(handle=handle, num_tweet=30) # Returns dataframe
@@ -96,7 +96,7 @@ def tweet_workflow():
         most_tweeted_company = max(ticker_dict, key=ticker_dict.get)
         number_of_mentions = ticker_dict[most_tweeted_company]
         ESG_most_tweeted_company = ticker_ESG(most_tweeted_company)
-        average_return = sum_stock_returns/(number_of_mentions - no_data_counter)
+        average_return = "{:.2%}".format(sum_stock_returns/(number_of_mentions - no_data_counter))
 
         try:  # If no ESG ratings are available for all companies
             ESG_avg = ESG_avg_function(ticker_dict)
@@ -104,8 +104,7 @@ def tweet_workflow():
             ESG_avg = "This person has not tweeted about any ESG-rated companies!"
 
     # Send to Chrome Extension
-    # update_server_data([str(most_tweeted_company), str(number_of_mentions), str(ESG_most_tweeted_company), str(
-    #     ESG_avg), str(average_return)])
+    update_server_data([str(most_tweeted_company), str(number_of_mentions), str(ESG_most_tweeted_company), str(ESG_avg), str(average_return)])
 
     return str(most_tweeted_company), str(number_of_mentions), str(ESG_most_tweeted_company), str(
         ESG_avg), str(average_return)  # , ticker_dict
@@ -114,4 +113,6 @@ def tweet_workflow():
 
 
 if __name__ == "__main__":
-    print(tweet_workflow())
+    while True:
+        print(tweet_workflow())
+        

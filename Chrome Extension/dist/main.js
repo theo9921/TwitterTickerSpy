@@ -73,6 +73,7 @@
       u = document.querySelector(".i2"),
       c = document.querySelector(".i3"),
       z = document.querySelector(".i4"),
+      w = document.querySelector(".i5"),
       f = document.querySelector(".result-container");
     (f.style.display = "none"),
       (s.style.display = "none"),
@@ -108,6 +109,7 @@
                   (u.textContent = t.data[0].num_mentions),
                   (c.textContent = t.data[0].mtc_esg),
                   (z.textContent = t.data[0].esg_av),
+                  (w.textContent = t.data[0].avg_return),
                   (f.style.display = "block");
               } catch (e) {
                 (s.style.display = "none"),
