@@ -11,10 +11,10 @@ def get_twitter_handle():
 
 def update_server_data(data):
     myobj = {
-        "Most tweeted company": data[0],
-        "# of mentions": data[1],
-        "ESG of most tweeted company": data[2],
-        "Average ESG": data[3]
+        "mtc": data[0],
+        "num_mentions": data[1],
+        "mtc_esg": data[2],
+        "esg_av": data[3]
     }
 
     # update
