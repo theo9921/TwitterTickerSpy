@@ -57,7 +57,15 @@
     r.r(t);
     var n = r(10),
       o = r.n(n),
-      current_url = window.location.href;
+      current_url,
+      username;
+      chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+        current_url = String(tabs[0].url);
+        const regex = /(?<=twitter\.com\/)\w*/;
+        username = current_url.match(regex)[0];
+        // use `url` here inside the callback because it's asynchronous!
+      });
+    
     const i = document.querySelector(".errors"),
       s = document.querySelector(".loading"),
       a = document.querySelector(".i1"),
@@ -72,14 +80,22 @@
       p = document.querySelector(".handle-name"),
       d = async (e) => {
         e.preventDefault(),
-          (async (e) => {
+          await (async (e) => {
             (s.style.display = "block"), (i.textContent = "");
             try {
+              // const a = await o.a.put(
+              //   "http://localhost:3000/data/1/", {
+              //     ticker: "TSLA",
+              //     handle: "@jessy_doe",
+              //     fullName: "Tesla Inc",
+              //     price: "834.02",
+              // });
               const t = await o.a.get(
                 "http://localhost:3000/data/"
               );
               (s.style.display = "none"),
-                (a.textContent = p.value + t.data[0].handle + current_url),
+                (a.textContent = (p.value.trim() == "") ? ('@'+username) : '@'+p.value),
+                //(a.textContent = p.value + " " + username + " " + t.data[0].handle),
                 (u.textContent = t.data[0].ticker),
                 (c.textContent = t.data[0].fullName),
                 (z.textContent = t.data[0].price),
