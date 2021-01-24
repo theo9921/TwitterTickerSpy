@@ -6,7 +6,6 @@ from google.cloud import language_v1
 
 # https://googleapis.dev/python/google-api-core/latest/auth.html
 # client = datastore.Client()
-credentials = service_account.Credentials.from_service_account_file('rapid-hall-302622-7d92a5d1344e.json')
 #client = automl.AutoMlClient(credentials=credentials)
 
 
@@ -19,10 +18,11 @@ def inline_text_payload(file_path):
 
 def get_prediction(file_path, model_name):
     options = ClientOptions(api_endpoint='automl.googleapis.com')
+    credentials = service_account.Credentials.from_service_account_file('rapid-hall-302622-7d92a5d1344e.json')
     prediction_client = automl_v1.PredictionServiceClient(client_options=options, credentials=credentials)
 
-    text_snip = inline_text_payload(file_path)
-    #text_snip = {'text_snippet': {'content': "this is some test string", 'mime_type': 'text/plain'}}
+    #text_snip = inline_text_payload(file_path)
+    text_snip = {'text_snippet': {'content': "this is some test string", 'mime_type': 'text/plain'}}
     payload = automl_v1.ExamplePayload(text_snip)
     print(payload)
     request = prediction_client.predict(name=model_name, payload=payload)
