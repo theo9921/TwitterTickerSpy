@@ -2,7 +2,7 @@ import pandas as pd
 import itertools
 import snscrape.modules.twitter as sntwitter
 
-from analysis import tickers_in_tweet, ticker_ESG, ESG_avg_function
+from analysis import tickers_in_tweet, ticker_ESG, ESG_avg_function, stock_return_since_mention
 from extension_interface import get_twitter_handle
 from gcloud_api import stock_tweet_classifier
 
@@ -31,8 +31,23 @@ def gather_tickers(tweet_df):
     """
     # gathers list of all tickers mentioned in all tweets
     tickers_list = []
-    for i in range(len(tweet_df)):
-        tickers_list += tickers_in_tweet(tweet_df['content'][i])
+    date_df = tweet_df['date'].dt.date
+    sum_stock_return = 0
+    no_data_counter = 0
+    for i in tweet_df.index:
+        new_tickers = tickers_in_tweet(tweet_df['content'][i])
+        tickers_list += new_tickers
+        # If a tweet is added to the list calculate stock returns for this batch of stocks
+        if new_tickers != []:
+            date = str(date_df[i])
+            for j in range(len(new_tickers)):
+                ticker = new_tickers[j]
+                try:
+                    stock_return = stock_return_since_mention(ticker, date)
+                except IndexError:
+                    stock_return = 0
+                    no_data_counter += 1
+                sum_stock_return += stock_return
 
     # Create dict containing all companies mentioned (key), and the frequency (value)
     ticker_dict = {}
@@ -42,35 +57,32 @@ def gather_tickers(tweet_df):
         except KeyError:
             ticker_dict[tickers_list[i]] = 1
 
-    return ticker_dict
+    return ticker_dict, sum_stock_return, no_data_counter
 
 
 def tweet_workflow():
     """Main function for the python backend"""
     # Get twitter handle from Chrome Extension
     #handle = get_twitter_handle()
-    handle = "investor666"
+    handle = "MadsC007"
 
     # Scrape for the user's most recent tweets
     raw_tweets_df = twitter_scrape(handle=handle, num_tweet=30) # Returns dataframe
 
     # Tweet processing
-    # Stock tweet classifier
+    # Stock tweet filter
     stock_df_rows = []
-    # for row, tweet in enumerate(raw_tweets['content']):
+    # for row, tweet in enumerate(raw_tweets_df['content']):
     #     is_stock = stock_tweet_classifier(tweet)
     #
     #     if is_stock:
     #         stock_df_rows.append(row)
-    # print(stock_df_rows)
-    raw_tweets_df['index1'] = raw_tweets_df.index
-    stock_df_rows = [1, 11, 12]
-    print(raw_tweets_df.iloc[[1, 11, 12]])
-    print(raw_tweets_df['index1'].isin(stock_df_rows))
-    stock_tweets = raw_tweets_df.loc[raw_tweets_df['index1'].isin(stock_df_rows)]
+    stock_tweets = raw_tweets_df.iloc[stock_df_rows]
+
+    # Sentiment filter
 
     # Extract stock tickers
-    ticker_dict = gather_tickers(stock_tweets)
+    ticker_dict, sum_stock_returns, no_data_counter = gather_tickers(raw_tweets_df)
 
     # Stock ticker analysis
     if not ticker_dict:  # If no tickers were found in the tweets
@@ -78,11 +90,13 @@ def tweet_workflow():
         number_of_mentions = "N/A"
         ESG_most_tweeted_company = "N/A"
         ESG_avg = "N/A"
+        average_return = "N/A"
     else:
         # Most tweeted company and number of mentions
         most_tweeted_company = max(ticker_dict, key=ticker_dict.get)
         number_of_mentions = ticker_dict[most_tweeted_company]
         ESG_most_tweeted_company = ticker_ESG(most_tweeted_company)
+        average_return = sum_stock_returns/(number_of_mentions - no_data_counter)
 
         try:  # If no ESG ratings are available for all companies
             ESG_avg = ESG_avg_function(ticker_dict)
@@ -93,7 +107,7 @@ def tweet_workflow():
 
 
     return str(most_tweeted_company), str(number_of_mentions), str(ESG_most_tweeted_company), str(
-        ESG_avg)  # , ticker_dict
+        ESG_avg), str(average_return)  # , ticker_dict
 
     #return True
 

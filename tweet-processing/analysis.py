@@ -7,6 +7,8 @@ import numpy as np
 import requests
 from bs4 import BeautifulSoup
 import re
+import yfinance as yf
+import datetime
 
 
 def tickers_in_tweet(tweet):
@@ -82,3 +84,44 @@ def ESG_avg_function(dictionary):
     ESG_avg = numerator / total_mentions
 
     return ESG_avg
+
+
+def stock_price_today(ticker):
+    """
+    Input: ticker of a stock (as string)
+    Returns the stock price of that stock today
+    """
+    now = datetime.datetime.now().strftime("%Y-%m-%d")
+    stock = yf.Ticker(ticker)
+    price = stock.history(start='2021-01-01', end=now)
+    price_today = price['Close'][-1]
+
+    return price_today
+
+
+def stock_price_at_date(ticker, date):
+    """
+    Inputs: 1) ticker of a stock (as string)
+            2) Date you want the stock price for (format: 'YYYY-MM-DD')
+    Returns the stock price of that ticker for that day (or closest to)
+    """
+    now = datetime.datetime.now().strftime("%Y-%m-%d")
+    stock = yf.Ticker(ticker)
+    price = stock.history(start=date, end=now)
+    price_date = price['Close'][0]
+
+    return price_date
+
+
+def stock_return_since_mention(ticker, date):
+    """
+    Input:  Ticker
+            Date the stock was mentioned (format: 'YYYY-MM-DD')
+    Output: Stock return since it was mentioned
+    """
+    price_today = stock_price_today(ticker)
+    price_date = stock_price_at_date(ticker, date)
+
+
+    stock_return = (price_today - price_date) / price_date
+    return stock_return
